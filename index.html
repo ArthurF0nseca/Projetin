@@ -1,48 +1,102 @@
 <!DOCTYPE html>
- <html lang="pt-br">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Date?</title>
-  <link rel="stylesheet" href="style.css">
- </head>
- <body>
-  <div class="container">
-  <h1>E aí, bora parar de enrolar e marcar nosso date? 😀</h1>
-  <div class="buttons-container" id="buttons-container">
-  <button id="sim">Sim</button>
-  <button id="nao">Não</button>
-  </div>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>E aí, bora parar de enrolar e marcar nosso date? 😀</h1>
+        <div class="buttons-container" id="buttons-container">
+            <button id="sim">Sim</button>
+            <button id="nao">Não</button>
+        </div>
 
-  <div id="formulario" style="display: none;">
-  <h2>Escolhe o(s) rolê(s) que mais te animam:</h2>
-  <form id="date-form">
-  <div class="option">
-  <input type="checkbox" id="prainha" name="opcao" value="Prainha domingo">
-  <label for="prainha">Prainha domingo</label>
-  </div>
-  <div class="option">
-  <input type="checkbox" id="jantar" name="opcao" value="Jantar Segunda (dps da minha prova🥹)">
-  <label for="jantar">Jantar Segunda (dps da minha prova🥹)</label>
-  </div>
-  <div class="option">
-  <input type="checkbox" id="stitch" name="opcao" value="Assistir o filme do Stitch e dps sair para comer">
-  <label for="stitch">Assistir o filme do Stitch e dps sair para comer</label>
-  </div>
-  <div class="option">
-  <input type="checkbox" id="aventura" name="opcao" value="Nos aventurar e tentar algo terça ou quinta dps do seu trabalho kkkk">
-  <label for="aventura">Nos aventurar e tentar algo terça ou quinta dps do seu trabalho kkkk</label>
-  </div>
-  <button type="submit" id="enviar">Enviar resposta</button>
-  </form>
-  <p>Caso tenha outra ideia, me envia por mensagem!</p>
-  </div>
-  
-  <div id="agradecimento" style="display: none;">
-  <h2>Obrigado pela resposta!</h2>
-  <p>Mal posso esperar pelo nosso encontro ❤️</p>
-  </div>
-  </div>
-  <script src="script.js"></script>
- </body>
- </html>
+        <div id="formulario" style="display: none;">
+            <h2>Escolhe o(s) rolê(s) que mais te animam:</h2>
+            <form 
+                id="date-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSdE-z4sHF_kJuvIRxbUcf1Evr7Dzy85Sn2-agyDjXHgBP6lqg/formResponse"
+                method="POST"
+                target="_blank"
+                onsubmit="mostrarAgradecimento(); return false;"
+            >
+                <div class="option">
+                    <input type="checkbox" id="prainha" name="entry.143364421" value="Prainha domingo">
+                    <label for="prainha">Prainha domingo</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="jantar" name="entry.143364421" value="Jantar Segunda (dps da minha prova🥹)">
+                    <label for="jantar">Jantar Segunda (dps da minha prova🥹)</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="stitch" name="entry.143364421" value="Assistir o filme do Stitch e dps sair para comer">
+                    <label for="stitch">Assistir o filme do Stitch e dps sair para comer</label>
+                </div>
+                <div class="option">
+                    <input type="checkbox" id="aventura" name="entry.143364421" value="Nos aventurar e tentar algo terça ou quinta dps do seu trabalho kkkk">
+                    <label for="aventura">Nos aventurar e tentar algo terça ou quinta dps do seu trabalho kkkk</label>
+                </div>
+                <button type="submit" id="enviar">Enviar resposta</button>
+            </form>
+            <p>Caso tenha outra ideia, me envia por mensagem!</p>
+        </div>
+        
+        <div id="agradecimento" style="display: none;">
+            <h2>Obrigado pela resposta!</h2>
+            <p>Mal posso esperar pelo nosso encontro ❤️</p>
+        </div>
+    </div>
+    <script>
+        // Botão "Não" foge
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnNao = document.getElementById('nao');
+            const btnSim = document.getElementById('sim');
+            const formulario = document.getElementById('formulario');
+            const agradecimento = document.getElementById('agradecimento');
+            const buttonsContainer = document.getElementById('buttons-container');
+
+            function moveButton() {
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                const buttonRect = btnNao.getBoundingClientRect();
+                const maxX = containerRect.width - buttonRect.width;
+                const maxY = containerRect.height - buttonRect.height;
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                btnNao.style.left = randomX + 'px';
+                btnNao.style.top = randomY + 'px';
+            }
+
+            const isTouchDevice = () => {
+                return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
+            };
+
+            if (isTouchDevice()) {
+                btnNao.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    moveButton();
+                });
+            } else {
+                btnNao.addEventListener('mouseover', moveButton);
+                btnNao.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    moveButton();
+                });
+            }
+
+            btnSim.addEventListener('click', function() {
+                buttonsContainer.style.display = 'none';
+                formulario.style.display = 'block';
+            });
+        });
+
+        // Função para mostrar agradecimento após envio do formulário
+        function mostrarAgradecimento() {
+            document.getElementById('formulario').style.display = 'none';
+            document.getElementById('agradecimento').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
